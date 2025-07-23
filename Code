@@ -1,0 +1,70 @@
+import random
+
+# Slot Machine Program
+
+def spin_row():
+    symbols = ['🍒','🍉','🍎','⭐','💰']
+    return[random.choice(symbols) for _ in range(3)]
+def print_row(row):
+    print("*************************")
+    print(" | ".join(row))
+    print("*************************")
+
+def get_payout(row, bet):
+    if row[0] == row[1] == row[2]:
+        if row[0] == '🍒' :
+            return bet * 3
+        elif row[0] == '🍉':
+            return bet * 2
+        elif row[0] == '🍎':
+            return bet * 4
+        elif row[0] == '⭐':
+            return bet * 5
+        elif row[0] == '💰':
+            return bet * 10
+    return 0
+
+def main():
+    balance = 100
+    print("*************************")
+    print("Welcome to Snake Slots")
+    print("Symbols 🍒🍉🍎⭐💰")
+    print("*************************")
+
+    while balance > 0:
+        print(f"current balance: ${balance}")
+        bet = input("Enter your bet here: ")
+
+        if not bet.isdigit():
+            print("Enter a valid bet number.")
+            continue
+
+        bet = int(bet)
+        if bet > balance:
+            print("Your bet can't be greater than your balance.")
+            continue
+        if bet <= 0:
+            print("Your bet must be greater than or equal to zero.")
+            continue
+        balance -= bet
+        row = spin_row()
+        print ("Spinning........\n")
+        print_row(row)
+        payout = get_payout(row, bet)
+
+        if payout > 0:
+            print(f"You won ${payout}")
+        else:
+            print("You have lost your bet")
+        balance += payout
+
+        play_again = input("Would you like to play again? (y/n): ").upper()
+
+        if play_again != 'Y':
+            break
+    print("***************************************")
+    print(f"Game over, your balance is {balance}")
+    print("***************************************")
+
+if __name__ == '__main__':
+    main()
